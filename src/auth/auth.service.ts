@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { randomBytes, createHash } from 'crypto';
-import { Account } from '../account/account.entity';
+import { Account } from 'breaklee-data-lib';
 import { JwtService } from '@nestjs/jwt';
 
 export type AuthTokenPayload = {

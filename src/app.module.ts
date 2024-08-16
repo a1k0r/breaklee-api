@@ -5,9 +5,9 @@ import { AuthModule } from './auth/auth.module';
 import { AccountModule } from './account/account.module';
 import { WinstonModule } from 'nest-winston';
 import { transports } from 'winston';
-import { Account } from './account/account.entity';
-import { AuthService } from './auth/auth.service';
-import { JwtService } from '@nestjs/jwt';
+// import { Account } from './account/account.entity';
+import { BlacklistModule } from './blacklist/blacklist.module';
+import { Account } from 'breaklee-data-lib';
 
 const configModule = ConfigModule.forRoot({
   isGlobal: true,
@@ -32,7 +32,14 @@ const authDbModule = TypeOrmModule.forRootAsync({
 });
 
 @Module({
-  imports: [configModule, logModule, authDbModule, AuthModule, AccountModule],
+  imports: [
+    configModule,
+    logModule,
+    authDbModule,
+    AuthModule,
+    AccountModule,
+    BlacklistModule,
+  ],
   controllers: [],
   providers: [],
 })

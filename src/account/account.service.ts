@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { Account } from './account.entity';
+import { Account } from 'breaklee-data-lib';
 import { InjectRepository } from '@nestjs/typeorm';
 
 export type CreateAccountData = {

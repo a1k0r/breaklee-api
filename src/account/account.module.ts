@@ -1,7 +1,7 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { AccountService } from './account.service';
-import { Account } from './account.entity';
+import { Account } from 'breaklee-data-lib';
 import { AccountController } from './account.controller';
 
 @Module({
