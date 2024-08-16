@@ -20,7 +20,7 @@ async function bootstrap() {
       .setDescription('The breaklee API description')
       .setVersion('1.0')
       .addServer(`http://localhost:${configService.get('API_PORT')}`)
-      .addSecurity('token', {
+      .addSecurity('auth-token', {
         type: 'apiKey',
         name: AUTH_TOKEN_HEADER,
         in: 'header',

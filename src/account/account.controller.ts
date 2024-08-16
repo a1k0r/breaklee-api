@@ -3,7 +3,7 @@ import { MeResponseDto } from './dto/me.dto';
 import { plainToInstance } from 'class-transformer';
 import { AuthTokenPayload } from '../auth/auth.service';
 import { AccountService } from './account.service';
-import { ApiOkResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiOkResponse, ApiSecurity, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('account')
@@ -12,6 +12,7 @@ export class AccountController {
 
   @Get('me')
   @UseGuards(AuthGuard)
+  @ApiSecurity('auth-token')
   @ApiOkResponse({
     description: 'User successfully fetched',
     type: MeResponseDto,
