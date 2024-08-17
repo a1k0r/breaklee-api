@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { AccountModule } from '../account/account.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthGuard } from './auth.guard';
+import { BlacklistModule } from '../blacklist/blacklist.module';
 
 const jwtModule = JwtModule.registerAsync({
   global: true,
@@ -18,9 +19,9 @@ const jwtModule = JwtModule.registerAsync({
 });
 
 @Module({
-  imports: [jwtModule, AccountModule],
+  imports: [jwtModule, forwardRef(() => AccountModule), BlacklistModule],
   providers: [AuthService, AuthGuard],
   controllers: [AuthController],
-  exports: [AuthService, AuthGuard],
+  exports: [AuthService, AuthGuard, BlacklistModule],
 })
 export class AuthModule {}

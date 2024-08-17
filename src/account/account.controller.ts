@@ -5,6 +5,7 @@ import { AuthTokenPayload } from '../auth/auth.service';
 import { AccountService } from './account.service';
 import { ApiOkResponse, ApiSecurity, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
+import { AUTH_REQUEST_KEY } from '../auth/auth.constants';
 
 @Controller('account')
 export class AccountController {
@@ -19,7 +20,7 @@ export class AccountController {
   })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async me(@Req() request: Request): Promise<MeResponseDto> {
-    const authTokenPayload: AuthTokenPayload = request['auth'];
+    const authTokenPayload: AuthTokenPayload = request[AUTH_REQUEST_KEY];
 
     const account = await this.accountService.findById(
       authTokenPayload.accountId,

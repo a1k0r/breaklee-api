@@ -5,13 +5,19 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AUTH_TOKEN_HEADER } from './auth.constants';
+import { AUTH_REQUEST_KEY, AUTH_TOKEN_HEADER } from './auth.constants';
 import { JwtService } from '@nestjs/jwt';
 import { AuthTokenPayload } from './auth.service';
+import { BlacklistService } from '../blacklist/blacklist.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+
+    @Inject(BlacklistService)
+    private readonly blacklistService: BlacklistService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -27,9 +33,16 @@ export class AuthGuard implements CanActivate {
 
       // TODO: Add user selection
 
-      // TODO: Add blacklist check
+      const blacklisted = await this.blacklistService.isBlacklisted({
+        account_id: payload.accountId,
+        address_ip: request.ip,
+      });
 
-      request['auth'] = payload;
+      if (blacklisted) {
+        throw new UnauthorizedException();
+      }
+
+      request[AUTH_REQUEST_KEY] = payload;
     } catch (err) {
       console.log(err);
       throw new UnauthorizedException();
